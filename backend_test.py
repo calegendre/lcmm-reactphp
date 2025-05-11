@@ -60,9 +60,9 @@ class LCMMAPITester:
         success, response = self.run_test(
             "Login",
             "POST",
-            "auth.php",
+            "auth.php?action=login",
             200,
-            data={"email": email, "password": password, "action": "login"}
+            data={"email": email, "password": password}
         )
         if success and 'token' in response:
             self.token = response['token']
@@ -74,9 +74,9 @@ class LCMMAPITester:
         success, response = self.run_test(
             "Admin Login",
             "POST",
-            "auth.php",
+            "auth.php?action=login",
             200,
-            data={"email": email, "password": password, "action": "login"}
+            data={"email": email, "password": password}
         )
         if success and 'token' in response:
             self.admin_token = response['token']
