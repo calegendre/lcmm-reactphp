@@ -56,5 +56,29 @@ try {
   console.error('LCMM: Failed to load SearchResult component', error);
 }
 
+// Load the LoginPage component
+try {
+  const LoginPageComponent = document.createElement('script');
+  LoginPageComponent.src = '/static/js/components/LoginPage.js';
+  LoginPageComponent.async = true;
+  document.head.appendChild(LoginPageComponent);
+  
+  console.log('LCMM: Loaded LoginPage component');
+} catch (error) {
+  console.error('LCMM: Failed to load LoginPage component', error);
+}
+
+// Load the RegisterPage component
+try {
+  const RegisterPageComponent = document.createElement('script');
+  RegisterPageComponent.src = '/static/js/components/RegisterPage.js';
+  RegisterPageComponent.async = true;
+  document.head.appendChild(RegisterPageComponent);
+  
+  console.log('LCMM: Loaded RegisterPage component');
+} catch (error) {
+  console.error('LCMM: Failed to load RegisterPage component', error);
+}
+
 // Register the bundle as loaded
 console.log('LCMM Components Bundle Loaded');
