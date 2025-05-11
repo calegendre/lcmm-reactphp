@@ -99,3 +99,21 @@ nav a, nav button {
 .media-card:hover img {
   transform: scale(1.05);
 }
+
+/* Login/Register page logo styles */
+.min-h-screen .logo-container {
+  display: block;
+  height: auto;
+  text-align: center;
+}
+
+.min-h-screen .logo-container img {
+  max-width: 180px;
+  height: auto;
+  margin: 0 auto 1rem;
+  display: block;
+}
+
+.min-h-screen .text-4xl {
+  line-height: 1.2;
+}
