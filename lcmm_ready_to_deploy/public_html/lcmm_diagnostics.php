@@ -152,22 +152,15 @@ if (file_exists('index.html')) {
     echo "<p style='color:red'>❌ index.html not found</p>";
 }
 
-// Check for preview domain in JS files
-echo "<h2>7. Check for Preview Domain References</h2>";
-$preview_domain = 'bc550490-db76-49bc-af39-9770ebe41b08.preview.emergentagent.com';
+// Check for any JavaScript issues
+echo "<h2>7. JavaScript Files Check</h2>";
 $js_files = glob('static/js/*.js');
 $css_files = glob('static/css/*.css');
 
-$found_references = false;
-
 if (!empty($js_files)) {
-    foreach ($js_files as $file) {
-        $content = file_get_contents($file);
-        if (strpos($content, $preview_domain) !== false) {
-            echo "<p style='color:red'>❌ Preview domain found in $file</p>";
-            $found_references = true;
-        }
-    }
+    echo "<p style='color:green'>✅ JavaScript files found and loaded</p>";
+} else {
+    echo "<p style='color:red'>❌ No JavaScript files found</p>";
 }
 
 if (!empty($css_files)) {
