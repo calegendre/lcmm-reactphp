@@ -12,7 +12,9 @@ define('DB_HOST', 'localhost');
 define('DB_NAME', 'legendrecloud_lcmm');
 define('DB_USER', 'legendrecloud_lcmmuser');
 define('DB_PASS', 'Royal&Downloader*2025*');
-define('APP_SECRET', 'legendrecloud_secure_key_2025');
+
+// Include JWT helper
+require_once 'jwt_helper.php';
 
 // Database connection function
 function get_db_connection() {
@@ -36,35 +38,6 @@ function send_json_response($data, $status_code = 200) {
 
 function send_error($message, $status_code = 400) {
     send_json_response(['error' => $message], $status_code);
-}
-
-// JWT validation function
-function validate_jwt($token) {
-    $parts = explode('.', $token);
-    
-    if (count($parts) !== 3) {
-        throw new Exception('Invalid token format');
-    }
-    
-    list($header, $payload, $signature) = $parts;
-    
-    // Base64 url decode
-    $header = json_decode(base64_decode(str_replace(['-', '_'], ['+', '/'], $header)), true);
-    $payload_json = base64_decode(str_replace(['-', '_'], ['+', '/'], $payload));
-    $payload = json_decode($payload_json, true);
-    
-    $valid_signature = hash_hmac('sha256', "$header.$payload", APP_SECRET, true);
-    $valid_signature = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($valid_signature));
-    
-    if ($signature !== $valid_signature) {
-        throw new Exception('Invalid token signature');
-    }
-    
-    if (!isset($payload['exp']) || $payload['exp'] < time()) {
-        throw new Exception('Token has expired');
-    }
-    
-    return $payload;
 }
 
 // Handle getting all additions (filtered activity logs)
@@ -116,7 +89,10 @@ function log_activity($user_id, $action, $details = '', $ip_address = null) {
     $stmt = $conn->prepare("INSERT INTO activity_logs (user_id, action, details, ip_address) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("isss", $user_id, $action, $details, $ip_address);
     
-    return $stmt->execute();
+    $result = $stmt->execute();
+    $stmt->close();
+    
+    return $result;
 }
 
 // Main code - Process the request
