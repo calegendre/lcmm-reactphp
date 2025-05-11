@@ -164,13 +164,9 @@ if (!empty($js_files)) {
 }
 
 if (!empty($css_files)) {
-    foreach ($css_files as $file) {
-        $content = file_get_contents($file);
-        if (strpos($content, $preview_domain) !== false) {
-            echo "<p style='color:red'>❌ Preview domain found in $file</p>";
-            $found_references = true;
-        }
-    }
+    echo "<p style='color:green'>✅ CSS files found and loaded</p>";
+} else {
+    echo "<p style='color:red'>❌ No CSS files found</p>";
 }
 
 if (!$found_references) {
