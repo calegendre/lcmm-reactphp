@@ -2,20 +2,10 @@ import React, { useState } from 'react';
 
 const MediaCard = ({ media, type }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [imgError, setImgError] = useState(false);
   
-  // Use fallback image if original image fails to load or doesn't exist
-  const imageUrl = imgError || 
-                  !(media.images?.find(img => img.coverType === 'poster')?.remoteUrl || 
-                    media.images?.find(img => img.coverType === 'poster')?.url)
-                    ? '/coverunavailable.png'
-                    : (media.images?.find(img => img.coverType === 'poster')?.remoteUrl || 
-                       media.images?.find(img => img.coverType === 'poster')?.url);
-  
-  // Handle image loading error
-  const handleImageError = () => {
-    setImgError(true);
-  };
+  const imageUrl = media.images?.find(img => img.coverType === 'poster')?.remoteUrl || 
+                   media.images?.find(img => img.coverType === 'poster')?.url || 
+                   '/coverunavailable.png';
   
   const year = type === 'show' 
     ? media.year 
@@ -37,7 +27,6 @@ const MediaCard = ({ media, type }) => {
         <img 
           src={imageUrl} 
           alt={media.title} 
-          onError={handleImageError}
           className="w-full h-auto object-cover transition-transform duration-300"
           style={{ transform: isHovered ? 'scale(1.05)' : 'scale(1)' }}
         />

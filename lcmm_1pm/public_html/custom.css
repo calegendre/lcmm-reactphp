@@ -94,17 +94,10 @@ nav a, nav button {
 
 .media-card img {
   transition: transform 0.3s ease;
-  min-height: 150px;
 }
 
 .media-card:hover img {
   transform: scale(1.05);
-}
-
-/* Image placeholder styles */
-.image-placeholder {
-  border-radius: 4px;
-  overflow: hidden;
 }
 
 /* Login/Register page logo styles */

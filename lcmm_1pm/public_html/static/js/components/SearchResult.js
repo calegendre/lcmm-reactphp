@@ -5,20 +5,10 @@ const SearchResult = ({ result, type, rootFolders, onAdd }) => {
   const [selectedFolder, setSelectedFolder] = useState('');
   const [isAdding, setIsAdding] = useState(false);
   const [detailsExpanded, setDetailsExpanded] = useState(false);
-  const [imgError, setImgError] = useState(false);
   
-  // Use fallback image if original image fails to load or doesn't exist
-  const imageUrl = imgError || 
-                  !(result.images?.find(img => img.coverType === 'poster')?.remoteUrl || 
-                    result.images?.find(img => img.coverType === 'poster')?.url)
-                    ? '/coverunavailable.png'
-                    : (result.images?.find(img => img.coverType === 'poster')?.remoteUrl || 
-                       result.images?.find(img => img.coverType === 'poster')?.url);
-  
-  // Handle image loading error
-  const handleImageError = () => {
-    setImgError(true);
-  };
+  const imageUrl = result.images?.find(img => img.coverType === 'poster')?.remoteUrl || 
+                  result.images?.find(img => img.coverType === 'poster')?.url || 
+                  '/coverunavailable.png';
   
   const handleAdd = async () => {
     if (!selectedFolder) {
@@ -47,7 +37,6 @@ const SearchResult = ({ result, type, rootFolders, onAdd }) => {
           <img 
             src={imageUrl} 
             alt={result.title} 
-            onError={handleImageError}
             className="w-full h-auto rounded-md object-cover aspect-[2/3]"
           />
         </div>

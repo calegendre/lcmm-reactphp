@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../components/auth/RegisterForm';
 import { useAuth } from '../contexts/AuthContext';
@@ -6,7 +6,6 @@ import { useAuth } from '../contexts/AuthContext';
 const RegisterPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [imgError, setImgError] = useState(false);
 
   // If user is already logged in, redirect to library page
   useEffect(() => {
@@ -15,24 +14,16 @@ const RegisterPage = () => {
     }
   }, [user, navigate]);
 
-  // Handle image loading error
-  const handleImageError = () => {
-    console.error('Failed to load logo image');
-    setImgError(true);
-  };
-
   return (
     <div className="min-h-screen flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black to-dark-100">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
           <div className="logo-container mx-auto mb-6">
-            {/* Actual logo image with error handling */}
+            {/* Actual logo image */}
             <img 
               src="/logo.png" 
               alt="LCMM Logo" 
-              onError={handleImageError}
               className="h-24 w-auto mx-auto mb-4" 
-              style={{ display: imgError ? 'none' : 'block' }}
             />
             <div className="text-4xl font-extrabold text-white"> 
               <span className="text-primary-500">L</span>CMM 

@@ -1,36 +1,12 @@
 /*
  * LCMM - Legendre Cloud Media Manager - Components Bundle
- * Version: 1.0.1
+ * Version: 1.0.0
  * This file contains compiled components for LCMM
  */
 
 // Map the Components export
 window.LCMM = window.LCMM || {};
 window.LCMM.Components = window.LCMM.Components || {};
-
-// Load the image fallback handler
-try {
-  const imageFallbackScript = document.createElement('script');
-  imageFallbackScript.src = '/static/js/image-fallback.js';
-  imageFallbackScript.async = false;
-  document.head.appendChild(imageFallbackScript);
-  
-  console.log('LCMM: Loaded image fallback script');
-} catch (error) {
-  console.error('LCMM: Failed to load image fallback script', error);
-}
-
-// Load the Navbar component
-try {
-  const NavbarComponent = document.createElement('script');
-  NavbarComponent.src = '/static/js/components/Navbar.js';
-  NavbarComponent.async = true;
-  document.head.appendChild(NavbarComponent);
-  
-  console.log('LCMM: Loaded Navbar component');
-} catch (error) {
-  console.error('LCMM: Failed to load Navbar component', error);
-}
 
 // Load the Additions component
 try {
