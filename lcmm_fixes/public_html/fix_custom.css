@@ -1,0 +1,93 @@
+/* LCMM Custom CSS Fixes */
+
+/* 1. Header and Logo Fixes */
+nav.bg-dark-100 {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Fix vertical alignment in navigation */
+.flex.justify-between.h-16 {
+  align-items: center !important;
+}
+
+/* Logo container styles */
+.logo-container {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.logo-container img {
+  height: 32px !important;
+  width: auto !important;
+  margin-right: 8px !important;
+}
+
+/* Ensure menu items are visible */
+.sm\:ml-6.sm\:flex.sm\:space-x-8 {
+  height: 100%;
+  align-items: center;
+  margin-left: 1.5rem !important;
+  display: flex !important;
+}
+
+/* 2. Login/Signup Logo Fixes */
+.min-h-screen .logo-container {
+  display: block !important;
+  text-align: center !important;
+}
+
+.min-h-screen .logo-container img {
+  height: 80px !important;
+  width: auto !important;
+  margin: 0 auto 1rem !important;
+  display: block !important;
+}
+
+/* 3. Media Card Image Fixes */
+.media-card img {
+  min-height: 150px;
+  object-fit: cover;
+}
+
+/* Fix for API images */
+img[src^="http"] {
+  max-width: 100%;
+}
+
+/* Fix any flexbox issues in the header */
+nav .flex {
+  display: flex !important;
+}
+
+nav .items-center {
+  align-items: center !important;
+}
+
+/* Ensure the header logo text is visible */
+.logo-container .text-white {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Force media images to use cover art properly */
+.media-card .relative.overflow-hidden img,
+.w-full.sm\:w-36.md\:w-48 img {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 200px !important;
+  object-fit: cover !important;
+}
+
+/* Add background for missing images */
+.media-card .relative.overflow-hidden,
+.w-full.sm\:w-36.md\:w-48 {
+  background-color: #2d3748 !important;
+  position: relative !important;
+}
+
+/* Special fix for mobile menu */
+.sm\:hidden .space-y-1 {
+  display: block !important;
+}
