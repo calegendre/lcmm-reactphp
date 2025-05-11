@@ -61,8 +61,8 @@ class LCMMBackendTest(unittest.TestCase):
         self.assertTrue(static_dir.exists(), "Missing static directory in frontend build")
         
         # Check if static directory contains JS and CSS files
-        js_files = list(static_dir.glob("**/**.js"))
-        css_files = list(static_dir.glob("**/**.css"))
+        js_files = list(static_dir.glob("**/*.js"))
+        css_files = list(static_dir.glob("**/*.css"))
         
         self.assertTrue(len(js_files) > 0, "No JavaScript files found in static directory")
         self.assertTrue(len(css_files) > 0, "No CSS files found in static directory")
