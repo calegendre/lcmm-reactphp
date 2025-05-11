@@ -1,0 +1,49 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="/favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Legendre Cloud Media Manager - Access your Sonarr and Radarr libraries"/><link rel="apple-touch-icon" href="/logo192.png"/><link rel="manifest" href="/manifest.json"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><meta name="apple-mobile-web-app-title" content="LCMM"/><title>Legendre Cloud Media Manager</title><link href="/custom.css" rel="stylesheet"/><script defer="defer" src="/static/js/main.7aa19f1c.js"></script><link href="/static/css/main.c252083f.css" rel="stylesheet"></head><body class="bg-black text-white"><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div><script>let deferredPrompt;"serviceWorker"in navigator&&window.addEventListener("load",(function(){navigator.serviceWorker.register("/service-worker.js").then((function(e){console.log("ServiceWorker registration successful with scope: ",e.scope)}),(function(e){console.log("ServiceWorker registration failed: ",e)}))}));
+
+// Sticky header scrolling behavior
+window.addEventListener('scroll', function() {
+  const nav = document.querySelector('nav.bg-dark-100');
+  if (nav) {
+    if (window.scrollY > 10) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  }
+});
+
+// Handle logo loading
+window.addEventListener('DOMContentLoaded', function() {
+  const logoContainers = document.querySelectorAll('.logo-container');
+  
+  logoContainers.forEach(container => {
+    // Try to add the logo if it exists
+    const img = new Image();
+    img.onload = function() {
+      // If logo exists, replace text with logo + text
+      if (container.querySelector('.text-white')) {
+        const text = container.querySelector('.text-white').innerHTML;
+        container.innerHTML = '';
+        
+        const logoImg = document.createElement('img');
+        logoImg.src = '/logo.png';
+        logoImg.className = 'logo';
+        logoImg.alt = 'LCMM Logo';
+        
+        const textSpan = document.createElement('span');
+        textSpan.innerHTML = text;
+        textSpan.className = 'text-white font-bold text-xl';
+        
+        container.appendChild(logoImg);
+        container.appendChild(textSpan);
+      }
+    };
+    img.onerror = function() {
+      // If logo doesn't exist, do nothing and keep text only
+      console.log('Logo not found, using text only');
+    };
+    img.src = '/logo.png';
+  });
+});
+
+const installBanner=document.createElement("div");installBanner.style.display="none",window.addEventListener("beforeinstallprompt",(e=>{e.preventDefault(),deferredPrompt=e,/(iPhone|iPad|iPod)/i.test(navigator.userAgent)&&!window.matchMedia("(display-mode: standalone)").matches&&(installBanner.innerHTML='\n                <div class="fixed bottom-0 left-0 w-full bg-dark-300 p-4 flex items-center justify-between z-50">\n                  <div>\n                    <p class="font-semibold">Add LCMM to Home Screen</p>\n                    <p class="text-sm">For the best experience, add this app to your home screen.</p>\n                  </div>\n                  <button id="close-banner" class="px-3 py-1 bg-primary-500 rounded-md">Close</button>\n                </div>\n              ',document.body.appendChild(installBanner),installBanner.style.display="block",document.getElementById("close-banner").addEventListener("click",(()=>{installBanner.style.display="none"})))}))</script></body></html>
