@@ -1,0 +1,103 @@
+{
+  "project": {
+    "name": "Legendre Cloud Media Manager",
+    "abbreviation": "LCMM",
+    "description": "Invitation-only web application that connects to Sonarr and Radarr to allow users to see current shows and movies or add shows or movies to the library.",
+    "domain": "lcmm.legendre.cloud",
+    "webroot": "/home/legendrecloud/web/lcmm.legendre.cloud/public_html",
+    "currentPackage": "/app/lcmm_final.zip",
+    "version": "1.0.0"
+  },
+  "stack": {
+    "frontend": "React with Tailwind CSS",
+    "backend": "PHP 8.3",
+    "database": "MySQL/MariaDB",
+    "webserver": "Apache with mod_rewrite"
+  },
+  "apis": {
+    "sonarr": {
+      "url": "http://plex.legendre.cloud:8989",
+      "apiKey": "bae6e0f4548846e3b71290ce6817d081",
+      "auth": {
+        "username": "admin",
+        "password": "Downloader2023*"
+      }
+    },
+    "radarr": {
+      "url": "http://plex.legendre.cloud:7878",
+      "apiKey": "0d3448b9b1364cfeadbbab6fc50d966e",
+      "auth": {
+        "username": "admin",
+        "password": "Downloader2023*"
+      }
+    }
+  },
+  "database": {
+    "host": "localhost",
+    "name": "legendrecloud_lcmm",
+    "user": "legendrecloud_lcmmuser",
+    "password": "Royal&Downloader*2025*",
+    "tables": ["users", "invitations", "activity_logs"]
+  },
+  "authentication": {
+    "type": "JWT-based",
+    "admin": {
+      "email": "cl@legendremedia.com",
+      "password": "X9k#vP2$mL8qZ3nT"
+    },
+    "invitation_only": true
+  },
+  "fileStructure": {
+    "backend": {
+      "api": ["auth.php", "sonarr.php", "radarr.php", "users.php", "invitations.php", "setup.php"],
+      "config": [".htaccess", "config.js"]
+    },
+    "frontend": {
+      "static": ["index.html", "manifest.json", "service-worker.js"],
+      "assets": ["logo.png (to be added)", "favicon.ico (to be added)", "logo192.png (to be added)", "logo512.png (to be added)"]
+    },
+    "utilities": ["diagnostics.php", "test_api.php", "login_test.html"]
+  },
+  "features": {
+    "completed": [
+      "User authentication with JWT",
+      "Invitation-only registration",
+      "TV Show and Movie browsing",
+      "Search and add media content",
+      "Root folder selection for storage",
+      "In Library detection for media",
+      "Admin dashboard",
+      "Activity logging",
+      "Progressive Web App (PWA) support"
+    ],
+    "todo": [
+      "Logo placement and styling",
+      "Fix vertical alignment in navigation",
+      "Custom styling improvements"
+    ]
+  },
+  "issues": {
+    "resolved": [
+      "API file inclusion path issues (fixed with standalone files)",
+      "JWT token validation (implemented in each API file)",
+      "CORS headers for API communication",
+      "Password hashing compatibility",
+      "URL rewriting in .htaccess"
+    ],
+    "current": [
+      "Header navigation vertical alignment",
+      "Logo display and placement"
+    ]
+  },
+  "customization": {
+    "logo": {
+      "path": "/logo.png",
+      "description": "Main application logo - header placement",
+      "recommendedSize": "180px × 60px"
+    },
+    "css": {
+      "needsCustomFile": true,
+      "suggested": "custom.css with header navigation fixes"
+    }
+  }
+}
