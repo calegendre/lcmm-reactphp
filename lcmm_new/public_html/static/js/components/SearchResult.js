@@ -6,6 +6,7 @@ const SearchResult = ({ result, type, rootFolders, onAdd }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [detailsExpanded, setDetailsExpanded] = useState(false);
   
+  // Direct path to fallback image
   const imageUrl = result.images?.find(img => img.coverType === 'poster')?.remoteUrl || 
                   result.images?.find(img => img.coverType === 'poster')?.url || 
                   '/coverunavailable.png';
@@ -38,6 +39,11 @@ const SearchResult = ({ result, type, rootFolders, onAdd }) => {
             src={imageUrl} 
             alt={result.title} 
             className="w-full h-auto rounded-md object-cover aspect-[2/3]"
+            // If image fails to load, use the fallback
+            onError={(e) => {
+              e.target.onerror = null; // Prevent infinite loops
+              e.target.src = '/coverunavailable.png';
+            }}
           />
         </div>
         
