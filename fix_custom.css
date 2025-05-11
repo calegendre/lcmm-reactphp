@@ -1,0 +1,70 @@
+
+/* LCMM Custom CSS Fixes */
+
+/* 1. Header and Logo Fixes */
+nav.bg-dark-100 {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Fix vertical alignment in navigation */
+.flex.justify-between.h-16 {
+  align-items: center;
+}
+
+/* Logo container styles */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-container img {
+  height: 32px !important;
+  width: auto !important;
+  margin-right: 8px !important;
+}
+
+/* Ensure menu items are visible */
+.sm\:ml-6.sm\:flex.sm\:space-x-8 {
+  height: 100%;
+  align-items: center;
+  margin-left: 1.5rem;
+  display: flex !important;
+}
+
+/* 2. Login/Signup Logo Fixes */
+.min-h-screen .logo-container {
+  display: block;
+  text-align: center;
+}
+
+.min-h-screen .logo-container img {
+  height: 80px !important;
+  width: auto !important;
+  margin: 0 auto 1rem !important;
+  display: block !important;
+}
+
+/* 3. Media Card Image Fixes */
+.media-card img {
+  min-height: 150px;
+  object-fit: cover;
+}
+
+/* Add a backup text fallback for images */
+.media-card img:after {
+  content: "Image Unavailable";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #2d3748;
+  color: #a0aec0;
+  font-size: 14px;
+}
+      
