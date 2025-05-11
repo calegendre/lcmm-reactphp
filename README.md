@@ -24,12 +24,12 @@ A web application that connects to Sonarr and Radarr to allow users to browse an
      chmod 644 /home/legendrecloud/web/lcmm.legendre.cloud/public_html/.htaccess
      ```
 
-3. **Set up the database**
-   - Create the database tables by visiting:
+3. **Database Setup**
+   - Import the `lcmm_setup.sql` file into your MySQL database:
      ```
-     https://lcmm.legendre.cloud/api/setup.php?token=setup_XXXX
+     mysql -u legendrecloud_lcmmuser -p legendrecloud_lcmm < lcmm_setup.sql
      ```
-     Where `XXXX` is the token generated from your APP_SECRET (you'll see this in the setup.php file)
+   - Or use phpMyAdmin to import it if available in your HestiaCP installation.
 
 4. **Configure Logo and Icons**
    - Place your logo file at `/home/legendrecloud/web/lcmm.legendre.cloud/public_html/logo.png`

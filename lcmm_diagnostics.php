@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Database credentials - make sure these match your config.php
+// Database credentials - update these to match your actual database settings
 $db_host = 'localhost';  // Change if needed
 $db_name = 'legendrecloud_lcmm';
 $db_user = 'legendrecloud_lcmmuser';
@@ -40,10 +40,9 @@ if ($result === false) {
     echo "<p style='color:red'>❌ Query error: " . $conn->error . "</p>";
 } elseif ($result->num_rows === 0) {
     echo "<p style='color:red'>❌ Admin user not found in database</p>";
-    echo "<p>Try importing the SQL file again or check if you're connecting to the correct database</p>";
+    echo "<p>Creating admin user...</p>";
     
     // Create admin user if it doesn't exist
-    echo "<h3>Creating Admin User</h3>";
     $hashed_password = password_hash($admin_password, PASSWORD_DEFAULT);
     $role = 'admin';
     
@@ -98,7 +97,7 @@ if ($result === false) {
     }
 }
 
-// Step 5: Check auth.php file contents for login issues
+// Step 5: Check API configuration
 echo "<h2>5. API Configuration Check</h2>";
 
 if (file_exists('config.php')) {
@@ -146,38 +145,51 @@ if (file_exists('index.html')) {
     } else {
         echo "<p style='color:red'>❌ Service worker registration not found in index.html</p>";
     }
+    
+    // Check for any occurrences of the preview domain
+    if (strpos($index_contents, 'bc550490-db76-49bc-af39-9770ebe41b08.preview.emergentagent.com') !== false) {
+        echo "<p style='color:red'>❌ Preview domain found in index.html. This needs to be replaced with lcmm.legendre.cloud</p>";
+    } else {
+        echo "<p style='color:green'>✅ No references to preview domain in index.html</p>";
+    }
 } else {
     echo "<p style='color:red'>❌ index.html not found</p>";
 }
 
-// Test CORS headers
-echo "<h2>7. CORS Headers Test</h2>";
-echo "<p>Testing CORS headers for authentication endpoint...</p>";
+// Check for preview domain in JS files
+echo "<h2>7. Check for Preview Domain References</h2>";
+$preview_domain = 'bc550490-db76-49bc-af39-9770ebe41b08.preview.emergentagent.com';
+$js_files = glob('static/js/*.js');
+$css_files = glob('static/css/*.css');
 
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, "http://" . $_SERVER['HTTP_HOST'] . "/api/auth.php?action=login");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_HEADER, 1);
-curl_setopt($ch, CURLOPT_NOBODY, 1);
-curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "OPTIONS");
-$headers = array();
-$headers[] = "Origin: http://" . $_SERVER['HTTP_HOST'];
-$headers[] = "Access-Control-Request-Method: POST";
-$headers[] = "Access-Control-Request-Headers: Content-Type, Authorization";
-curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-$result = curl_exec($ch);
-if (curl_errno($ch)) {
-    echo "<p style='color:red'>❌ CORS test failed: " . curl_error($ch) . "</p>";
-} else {
-    if (strpos($result, "Access-Control-Allow-Origin") !== false) {
-        echo "<p style='color:green'>✅ CORS headers are properly set</p>";
-    } else {
-        echo "<p style='color:red'>❌ CORS headers not found in response</p>";
-        echo "<p>Response headers:</p>";
-        echo "<pre>" . htmlspecialchars($result) . "</pre>";
+$found_references = false;
+
+if (!empty($js_files)) {
+    foreach ($js_files as $file) {
+        $content = file_get_contents($file);
+        if (strpos($content, $preview_domain) !== false) {
+            echo "<p style='color:red'>❌ Preview domain found in $file</p>";
+            $found_references = true;
+        }
     }
 }
-curl_close($ch);
+
+if (!empty($css_files)) {
+    foreach ($css_files as $file) {
+        $content = file_get_contents($file);
+        if (strpos($content, $preview_domain) !== false) {
+            echo "<p style='color:red'>❌ Preview domain found in $file</p>";
+            $found_references = true;
+        }
+    }
+}
+
+if (!$found_references) {
+    echo "<p style='color:green'>✅ No references to preview domain found in static files</p>";
+} else {
+    echo "<p>To fix references to the preview domain, you can use this command:</p>";
+    echo "<pre>grep -rl \"$preview_domain\" . | xargs sed -i 's#$preview_domain#lcmm.legendre.cloud#g'</pre>";
+}
 
 // Display PHP version info
 echo "<h2>System Information</h2>";
