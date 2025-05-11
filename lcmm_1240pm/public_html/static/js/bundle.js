@@ -20,6 +20,18 @@ try {
   console.error('LCMM: Failed to load Additions component', error);
 }
 
+// Load the AdminPage component
+try {
+  const AdminPageComponent = document.createElement('script');
+  AdminPageComponent.src = '/static/js/components/AdminPage.js';
+  AdminPageComponent.async = true;
+  document.head.appendChild(AdminPageComponent);
+  
+  console.log('LCMM: Loaded AdminPage component');
+} catch (error) {
+  console.error('LCMM: Failed to load AdminPage component', error);
+}
+
 // Load the MediaCard component
 try {
   const MediaCardComponent = document.createElement('script');
