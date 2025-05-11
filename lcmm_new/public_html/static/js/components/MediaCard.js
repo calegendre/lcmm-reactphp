@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const MediaCard = ({ media, type }) => {
   const [isHovered, setIsHovered] = useState(false);
   
+  // Use the direct path for coverunavailable.png
   const imageUrl = media.images?.find(img => img.coverType === 'poster')?.remoteUrl || 
                    media.images?.find(img => img.coverType === 'poster')?.url || 
                    '/coverunavailable.png';
@@ -29,6 +30,11 @@ const MediaCard = ({ media, type }) => {
           alt={media.title} 
           className="w-full h-auto object-cover transition-transform duration-300"
           style={{ transform: isHovered ? 'scale(1.05)' : 'scale(1)' }}
+          // If image fails to load, use the fallback
+          onError={(e) => {
+            e.target.onerror = null; // Prevent infinite loops
+            e.target.src = '/coverunavailable.png';
+          }}
         />
         <div 
           className={`media-card-overlay absolute inset-0 flex flex-col justify-end p-4 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
