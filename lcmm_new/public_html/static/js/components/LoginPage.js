@@ -18,12 +18,13 @@ const LoginPage = () => {
     <div className="min-h-screen flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black to-dark-100">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <div className="logo-container mx-auto mb-6">
-            {/* Actual logo image */}
+          <div className="logo-container mx-auto mb-4">
+            {/* Logo element with absolute path */}
             <img 
               src="/logo.png" 
               alt="LCMM Logo" 
-              className="h-24 w-auto mx-auto mb-4" 
+              className="mx-auto mb-4" 
+              style={{ height: "80px", width: "auto" }}
             />
             <div className="text-4xl font-extrabold text-white"> 
               <span className="text-primary-500">L</span>CMM 
