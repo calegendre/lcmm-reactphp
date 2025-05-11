@@ -1,0 +1,48 @@
+/*
+ * LCMM - Legendre Cloud Media Manager - Components Bundle
+ * Version: 1.0.0
+ * This file contains compiled components for LCMM
+ */
+
+// Map the Components export
+window.LCMM = window.LCMM || {};
+window.LCMM.Components = window.LCMM.Components || {};
+
+// Load the Additions component
+try {
+  const AdditionsComponent = document.createElement('script');
+  AdditionsComponent.src = '/static/js/components/Additions.js';
+  AdditionsComponent.async = true;
+  document.head.appendChild(AdditionsComponent);
+  
+  console.log('LCMM: Loaded Additions component');
+} catch (error) {
+  console.error('LCMM: Failed to load Additions component', error);
+}
+
+// Load the MediaCard component
+try {
+  const MediaCardComponent = document.createElement('script');
+  MediaCardComponent.src = '/static/js/components/MediaCard.js';
+  MediaCardComponent.async = true;
+  document.head.appendChild(MediaCardComponent);
+  
+  console.log('LCMM: Loaded MediaCard component');
+} catch (error) {
+  console.error('LCMM: Failed to load MediaCard component', error);
+}
+
+// Load the SearchResult component
+try {
+  const SearchResultComponent = document.createElement('script');
+  SearchResultComponent.src = '/static/js/components/SearchResult.js';
+  SearchResultComponent.async = true;
+  document.head.appendChild(SearchResultComponent);
+  
+  console.log('LCMM: Loaded SearchResult component');
+} catch (error) {
+  console.error('LCMM: Failed to load SearchResult component', error);
+}
+
+// Register the bundle as loaded
+console.log('LCMM Components Bundle Loaded');
