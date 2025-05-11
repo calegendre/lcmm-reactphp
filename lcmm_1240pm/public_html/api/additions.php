@@ -29,6 +29,7 @@ function get_db_connection() {
 // API response helpers
 function send_json_response($data, $status_code = 200) {
     http_response_code($status_code);
+    header('Content-Type: application/json');
     echo json_encode($data);
     exit();
 }
@@ -47,13 +48,17 @@ function validate_jwt($token) {
     
     list($header, $payload, $signature) = $parts;
     
-    $valid_signature = base64_encode(hash_hmac('sha256', "$header.$payload", APP_SECRET, true));
+    // Base64 url decode
+    $header = json_decode(base64_decode(str_replace(['-', '_'], ['+', '/'], $header)), true);
+    $payload_json = base64_decode(str_replace(['-', '_'], ['+', '/'], $payload));
+    $payload = json_decode($payload_json, true);
+    
+    $valid_signature = hash_hmac('sha256', "$header.$payload", APP_SECRET, true);
+    $valid_signature = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($valid_signature));
     
     if ($signature !== $valid_signature) {
         throw new Exception('Invalid token signature');
     }
-    
-    $payload = json_decode(base64_decode($payload), true);
     
     if (!isset($payload['exp']) || $payload['exp'] < time()) {
         throw new Exception('Token has expired');
@@ -71,7 +76,7 @@ function handle_list_additions($user_id) {
     
     // Get all activity logs related to adding content
     $sql = "
-        SELECT a.*, u.email AS user_email
+        SELECT a.*, u.email AS user_email 
         FROM activity_logs a
         JOIN users u ON a.user_id = u.id
         WHERE a.action IN ('add_series', 'add_movie')
@@ -128,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 // Get JWT from authorization header
 $headers = getallheaders();
-$auth_header = $headers['Authorization'] ?? '';
+$auth_header = isset($headers['Authorization']) ? $headers['Authorization'] : '';
 
 if (!preg_match('/Bearer\s(\S+)/', $auth_header, $matches)) {
     send_error('Unauthorized: Missing or invalid token', 401);
