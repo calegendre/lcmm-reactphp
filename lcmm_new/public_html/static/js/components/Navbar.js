@@ -18,10 +18,10 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Link to="/" className="logo-container flex items-center">
-                {/* Logo image - positioned beside the text */}
-                <img src="/logo.png" alt="LCMM Logo" className="h-8 w-auto mr-2" />
-                <div className="text-white font-bold text-xl"> 
+              <Link to="/" className="logo-container">
+                {/* Logo placeholder - replace with your logo */}
+                <div className="text-white font-bold text-xl flex items-center"> 
+                  <img src="/logo.png" alt="LCMM Logo" className="h-8 w-auto mr-2" />
                   <span className="text-primary-500">L</span>CMM 
                 </div>
               </Link>
