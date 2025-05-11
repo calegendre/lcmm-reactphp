@@ -157,7 +157,7 @@ def main():
     tester = LCMMAPITester()
     
     # Test regular user login
-    if not tester.test_login("user@legendremedia.com", "TestUser2023*"):
+    if not tester.test_login("cl@legendremedia.com", "X9k#vP2$mL8qZ3nT"):
         print("❌ Regular user login failed, stopping tests")
         return 1
     
