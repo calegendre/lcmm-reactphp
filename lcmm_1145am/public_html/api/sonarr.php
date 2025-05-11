@@ -1,4 +1,7 @@
 <?php
+// Improved version of sonarr.php that fixes season and episode count issues
+// This file is identical to the original but with improved handling of series data
+
 // Enable error reporting during development
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -135,10 +138,44 @@ function handle_series($user_id) {
         send_error('Error fetching series from Sonarr: ' . $response['error'], $response['status_code']);
     }
     
+    // Get seasons and episodes for each series
+    $series_data = $response['data'];
+    foreach ($series_data as &$series) {
+        // Make sure we have seasonCount and episodeCount
+        if (!isset($series['seasonCount']) || $series['seasonCount'] == 0) {
+            // Try to calculate from statistics
+            if (isset($series['statistics']['seasonCount'])) {
+                $series['seasonCount'] = $series['statistics']['seasonCount'];
+            } elseif (isset($series['seasons']) && is_array($series['seasons'])) {
+                $series['seasonCount'] = count($series['seasons']);
+            } else {
+                // Make additional API call to get series details with seasons
+                $series_detail = make_api_request(SONARR_URL . '/api/v3/series/' . $series['id']);
+                if (!isset($series_detail['error']) && isset($series_detail['data']['seasons'])) {
+                    $series['seasonCount'] = count($series_detail['data']['seasons']);
+                } else {
+                    $series['seasonCount'] = 0;
+                }
+            }
+        }
+        
+        if (!isset($series['episodeCount']) || $series['episodeCount'] == 0) {
+            // Try to calculate from statistics
+            if (isset($series['statistics']['episodeCount'])) {
+                $series['episodeCount'] = $series['statistics']['episodeCount'];
+            } elseif (isset($series['episodeFileCount'])) {
+                $series['episodeCount'] = $series['episodeFileCount'];
+            } else {
+                // Use totalEpisodeCount if available
+                $series['episodeCount'] = $series['statistics']['totalEpisodeCount'] ?? 0;
+            }
+        }
+    }
+    
     // Log the activity
     log_activity($user_id, 'view_series', 'Viewed TV series library');
     
-    send_json_response($response['data']);
+    send_json_response($series_data);
 }
 
 // Handle getting root folders
@@ -179,6 +216,29 @@ function handle_search($user_id) {
         // Mark series that are already in the library
         foreach ($response['data'] as &$series) {
             $series['inLibrary'] = in_array($series['tvdbId'], $existing_tvdb_ids);
+            
+            // Make sure we have seasonCount and episodeCount
+            if (!isset($series['seasonCount']) || $series['seasonCount'] == 0) {
+                if (isset($series['statistics']['seasonCount'])) {
+                    $series['seasonCount'] = $series['statistics']['seasonCount'];
+                } elseif (isset($series['seasons']) && is_array($series['seasons'])) {
+                    $series['seasonCount'] = count($series['seasons']);
+                } else {
+                    // Use a default value for search results
+                    $series['seasonCount'] = count($series['seasons'] ?? []);
+                }
+            }
+            
+            if (!isset($series['episodeCount']) || $series['episodeCount'] == 0) {
+                if (isset($series['statistics']['episodeCount'])) {
+                    $series['episodeCount'] = $series['statistics']['episodeCount'];
+                } elseif (isset($series['episodeFileCount'])) {
+                    $series['episodeCount'] = $series['episodeFileCount'];
+                } else {
+                    // Use a default value for search results based on summary
+                    $series['episodeCount'] = $series['statistics']['totalEpisodeCount'] ?? 0;
+                }
+            }
         }
     }
     
