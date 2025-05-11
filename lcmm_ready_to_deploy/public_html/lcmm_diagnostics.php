@@ -169,12 +169,7 @@ if (!empty($css_files)) {
     echo "<p style='color:red'>❌ No CSS files found</p>";
 }
 
-if (!$found_references) {
-    echo "<p style='color:green'>✅ No references to preview domain found in static files</p>";
-} else {
-    echo "<p>To fix references to the preview domain, you can use this command:</p>";
-    echo "<pre>grep -rl \"$preview_domain\" . | xargs sed -i 's#$preview_domain#lcmm.legendre.cloud#g'</pre>";
-}
+
 
 // Display PHP version info
 echo "<h2>System Information</h2>";
