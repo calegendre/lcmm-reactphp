@@ -1,0 +1,29 @@
+
+<!-- IMPORTANT: This is the exact structure for media cards with fallback image -->
+<div class="media-card bg-dark-200 rounded-lg overflow-hidden shadow-lg h-full flex flex-col">
+  <div class="relative overflow-hidden" style="min-height: 250px;">
+    <img 
+      src="https://lcmm.legendre.cloud/coverunavailable.png" 
+      alt="Media Title" 
+      class="w-full h-auto object-cover"
+      onerror="this.onerror=null; this.src='https://lcmm.legendre.cloud/coverunavailable.png';"
+    />
+  </div>
+  
+  <div class="p-4 flex-grow">
+    <h3 class="font-bold text-white truncate mb-1">
+      Media Title
+    </h3>
+    <p class="text-xs text-gray-400 line-clamp-3">
+      Media description or overview would go here
+    </p>
+  </div>
+  
+  <div class="px-4 pb-4">
+    <div class="flex justify-between text-xs text-gray-400">
+      <span>10 episodes</span>
+      <span>2 seasons</span>
+    </div>
+  </div>
+</div>
+      
