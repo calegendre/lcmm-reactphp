@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LCMM Login Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; background-color: #f0f0f0; }
+        .card { background-color: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1, h2 { color: #333; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input[type="email"], input[type="password"] { width: 100%; padding: 8px; font-size: 16px; }
+        button { padding: 10px 15px; background: #4b6bfb; color: white; border: none; cursor: pointer; }
+        #result { margin-top: 20px; padding: 10px; border: 1px solid #ddd; min-height: 100px; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>LCMM Login Test</h1>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="cl@legendremedia.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" value="X9k#vP2$mL8qZ3nT" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    
+    <div class="card">
+        <h2>Result:</h2>
+        <pre id="result">Not submitted yet</pre>
+    </div>
+    
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const resultElement = document.getElementById('result');
+            
+            resultElement.textContent = 'Submitting...';
+            resultElement.className = '';
+            
+            fetch('/api/auth?action=login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => {
+                return response.text().then(text => {
+                    try {
+                        return {
+                            status: response.status,
+                            ok: response.ok,
+                            data: text ? JSON.parse(text) : {}
+                        };
+                    } catch (e) {
+                        return {
+                            status: response.status,
+                            ok: false,
+                            error: 'Invalid JSON',
+                            rawText: text
+                        };
+                    }
+                });
+            })
+            .then(result => {
+                resultElement.textContent = JSON.stringify(result, null, 2);
+                
+                if (result.ok) {
+                    resultElement.className = 'success';
+                    console.log('Login successful:', result.data);
+                    
+                    // Store token in localStorage for testing the actual app
+                    if (result.data.token) {
+                        localStorage.setItem('lcmm_token', result.data.token);
+                        localStorage.setItem('lcmm_user', JSON.stringify(result.data.user));
+                        resultElement.textContent += '\n\nToken saved to localStorage. You can now try the main app.';
+                    }
+                } else {
+                    resultElement.className = 'error';
+                    console.error('Login failed:', result);
+                }
+            })
+            .catch(error => {
+                resultElement.textContent = 'Error: ' + error.message;
+                resultElement.className = 'error';
+                console.error('Fetch error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
